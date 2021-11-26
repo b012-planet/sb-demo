@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
 	id("org.springframework.boot") version "2.5.6"
@@ -37,10 +38,15 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
-tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("bootBuildImage") {
+tasks.getByName<BootBuildImage>("bootBuildImage") {
 	imageName = "b012.registry:30500/${project.name}:${project.version}"
+	isPublish = true
 	docker {
 		builderRegistry {
+			url = "http://b012.registry/v2/"
+			token = ""
+		}
+		publishRegistry {
 			url = "http://b012.registry/v2/"
 			token = ""
 		}
